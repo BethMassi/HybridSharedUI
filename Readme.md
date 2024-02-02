@@ -116,21 +116,24 @@ namespace MyApp.Shared.Interfaces
 }
 ```
 
-2.  Move `Component1.razor` in the `MyApp.Shared` project to `Components` folder and
-    rename it to `FormFactorComponent.razor` and add the following code:
+2.  Move `Component1.razor` in the `MyApp.Shared` project to `Components` folder and add the following code:
 
 ```razor
 @using MyApp.Shared.Interfaces
 @inject IFormFactor FormFactor
 
 <div class="my-component">
-    <h3>@formFactor</h3>
+    <p>You are running on:</p>
+
+    <h3>@factor</h3>
+    <h3>@platform</h3>
 
     <em>This component is defined in the <strong>MyApp.Shared</strong> library.</em>
 </div>
 
 @code {
-    private string formFactor => FormFactor.GetFormFactor();
+    private string factor => FormFactor.GetFormFactor();
+    private string platform => FormFactor.GetPlatform();
 }
 ```
 3. Now that we have the interface defined we need to provide implementations in the web and native apps. In the `MyApp.Web` project, add a folder called `Services` and add a file called `FormFactor.cs`. Add the following code:
@@ -146,7 +149,6 @@ namespace MyApp.Web.Services
         {
             return "Web";
         }
-
         public string GetPlatform()
         {
             return Environment.OSVersion.ToString();
@@ -167,7 +169,6 @@ namespace MyApp.MAUI.Services
         {
             return DeviceInfo.Idiom.ToString();
         }
-
         public string GetPlatform()
         {
             return DeviceInfo.Platform.ToString() + " - " + DeviceInfo.VersionString;
