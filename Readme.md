@@ -32,14 +32,28 @@ To manually set this up yourself in Visual Studio, follow these steps:
 
 7.  Move `wwwroot/css` folder and all of its contents from from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
 
-8.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
+8. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
+    and rename the last two `@using`s to `MyApp.Shared`
 
-9.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
+```code
+...
+@using MyApp.Shared
+@using MyApp.Shared.Components
+```
+9. Open the `_Imports.razor` in `MyApp.Web` add a `@using` to `MyApp.Shared`
+
+```code
+...
+@using MyApp.Shared
+```
+10.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
+
+11.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
 ```
 <Router AppAssembly="@typeof(Routes).Assembly">
 ...
 ```
-10. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
+12. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
     `MyApp.Shared` RCL and update the `BlazorWebView` `RootComponent` `ComponentType` from `local` to `shared`:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -58,7 +72,7 @@ To manually set this up yourself in Visual Studio, follow these steps:
 </ContentPage>
 ```
 
-11. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
+13. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
     `_content/MyApp.Shared/`:
 
 ```xml
@@ -66,25 +80,13 @@ To manually set this up yourself in Visual Studio, follow these steps:
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />
 ```
 
-12. Open `App.razor` from `MyApp.Web` project and **add** the stylesheet references to
+14. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
     the `MyApp.Shared` there too:
 
 ```xml
 <link rel="stylesheet" href="_content/MyApp.Shared/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />   
 ```
-
-13. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
-    and rename the last two `@using`s to `MyApp.Shared`
-
-```code
-...
-@using MyApp.Shared
-@using MyApp.Shared.Components
-```
-
-14. In the `MyApp.Web` project, open `_Imports.razor` and add to end `@using MyApp.Shared`
-
 15.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
 
 16. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
@@ -101,7 +103,7 @@ app.MapRazorComponents<App>()
 
 This sample also shows how to use interfaces on the UI to call into different implementations across the web app and the native (MAUI Hybrid) app. We will make a component that displays the device form factor. We can use the MAUI abstraction layer for all the native apps but we will need to provide our own implementation for the web app.
 
-1.  In the `MyApp.Shared` project, create an `Interfaces` folder and add file called `IFormFacto.cs` with the following code:
+1.  In the `MyApp.Shared` project, create an `Interfaces` folder and add file called `IFormFactor.cs` with the following code:
 
 ```csharp
 namespace MyApp.Shared.Interfaces
@@ -114,21 +116,24 @@ namespace MyApp.Shared.Interfaces
 }
 ```
 
-2.  Move `Component1.razor` in the `MyApp.Shared` project to `Components` folder and
-    rename it to `FormFactorComponent.razor` and add the following code:
+2.  Move `Component1.razor` in the `MyApp.Shared` project to `Components` folder and add the following code:
 
 ```razor
 @using MyApp.Shared.Interfaces
 @inject IFormFactor FormFactor
 
 <div class="my-component">
-    <h3>@formFactor</h3>
+    <p>You are running on:</p>
+
+    <h3>@factor</h3>
+    <h3>@platform</h3>
 
     <em>This component is defined in the <strong>MyApp.Shared</strong> library.</em>
 </div>
 
 @code {
-    private string formFactor => FormFactor.GetFormFactor();
+    private string factor => FormFactor.GetFormFactor();
+    private string platform => FormFactor.GetPlatform();
 }
 ```
 3. Now that we have the interface defined we need to provide implementations in the web and native apps. In the `MyApp.Web` project, add a folder called `Services` and add a file called `FormFactor.cs`. Add the following code:
@@ -144,7 +149,6 @@ namespace MyApp.Web.Services
         {
             return "Web";
         }
-
         public string GetPlatform()
         {
             return Environment.OSVersion.ToString();
@@ -165,7 +169,6 @@ namespace MyApp.MAUI.Services
         {
             return DeviceInfo.Idiom.ToString();
         }
-
         public string GetPlatform()
         {
             return DeviceInfo.Platform.ToString() + " - " + DeviceInfo.VersionString;
@@ -188,14 +191,13 @@ builder.Services.AddSingleton<IFormFactor, FormFactor>();
 
 return builder.Build();
 ```
-6. Similarly, in the `MyApp.Web` project, open the `Program.cs` and right before the call to `builder.Build();` add the `using`s at the top:
+7. Similarly, in the `MyApp.Web` project, open the `Program.cs` and right before the call to `builder.Build();` add the `using`s at the top:
 ```csharp
 using MyApp.Web.Components;
 using MyApp.Shared.Interfaces;
 using MyApp.Web.Services;  
 ```
-6. And right before the call to `builder.Build();` add the following code:
-
+8. And right before the call to `builder.Build();` add the following code:
 ```csharp
 ...
 // Add device specific services used by Razor Class Library (MyApp.Shared)
@@ -203,3 +205,5 @@ builder.Services.AddScoped<IFormFactor, FormFactor>();
 
 var app = builder.Build();
 ```
+
+**That's it! Have fun.**
