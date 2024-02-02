@@ -1,0 +1,14 @@
+﻿@using MyApp.Shared.Interfaces
+@inject IFormFactor FormFactor
+
+<div class="my-component">
+    <h3>@formFactor</h3>
+
+    <em>This component is defined in the <strong>MyApp.Shared</strong> library.</em>
+</div>
+
+@code {
+    private string formFactor => FormFactor.GetFormFactor();
+}
+
+
