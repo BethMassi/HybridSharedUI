@@ -32,14 +32,23 @@ To manually set this up yourself in Visual Studio, follow these steps:
 
 7.  Move `wwwroot/css` folder and all of its contents from from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
 
-8.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
+8. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
+    and rename the last two `@using`s to `MyApp.Shared`
 
-9.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
+```code
+...
+@using MyApp.Shared
+@using MyApp.Shared.Components
+```
+
+9.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
+
+10.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
 ```
 <Router AppAssembly="@typeof(Routes).Assembly">
 ...
 ```
-10. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
+11. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
     `MyApp.Shared` RCL and update the `BlazorWebView` `RootComponent` `ComponentType` from `local` to `shared`:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -58,7 +67,7 @@ To manually set this up yourself in Visual Studio, follow these steps:
 </ContentPage>
 ```
 
-11. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
+12. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
     `_content/MyApp.Shared/`:
 
 ```xml
@@ -66,21 +75,12 @@ To manually set this up yourself in Visual Studio, follow these steps:
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />
 ```
 
-12. Open `App.razor` from `MyApp.Web` project and **add** the stylesheet references to
+13. Open `App.razor` from `MyApp.Web` project and **add** the stylesheet references to
     the `MyApp.Shared` there too:
 
 ```xml
 <link rel="stylesheet" href="_content/MyApp.Shared/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />   
-```
-
-13. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
-    and rename the last two `@using`s to `MyApp.Shared`
-
-```code
-...
-@using MyApp.Shared
-@using MyApp.Shared.Components
 ```
 
 14. In the `MyApp.Web` project, open `_Imports.razor` and add to end `@using MyApp.Shared`
