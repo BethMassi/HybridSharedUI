@@ -2,13 +2,17 @@
 @inject IFormFactor FormFactor
 
 <div class="my-component">
-    <h3>@formFactor</h3>
+    <p>You are running on:</p>
+
+    <h3>@factor</h3>
+    <h3>@platform</h3>
 
     <em>This component is defined in the <strong>MyApp.Shared</strong> library.</em>
 </div>
 
 @code {
-    private string formFactor => FormFactor.GetFormFactor();
+    private string factor => FormFactor.GetFormFactor();
+    private string platform => FormFactor.GetPlatform();
 }
 
 
