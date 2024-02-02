@@ -101,7 +101,7 @@ app.MapRazorComponents<App>()
 
 This sample also shows how to use interfaces on the UI to call into different implementations across the web app and the native (MAUI Hybrid) app. We will make a component that displays the device form factor. We can use the MAUI abstraction layer for all the native apps but we will need to provide our own implementation for the web app.
 
-1.  In the `MyApp.Shared` project, create an `Interfaces` folder and add file called `IFormFacto.cs` with the following code:
+1.  In the `MyApp.Shared` project, create an `Interfaces` folder and add file called `IFormFactor.cs` with the following code:
 
 ```csharp
 namespace MyApp.Shared.Interfaces
