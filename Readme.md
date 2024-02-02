@@ -188,14 +188,13 @@ builder.Services.AddSingleton<IFormFactor, FormFactor>();
 
 return builder.Build();
 ```
-6. Similarly, in the `MyApp.Web` project, open the `Program.cs` and right before the call to `builder.Build();` add the `using`s at the top:
+7. Similarly, in the `MyApp.Web` project, open the `Program.cs` and right before the call to `builder.Build();` add the `using`s at the top:
 ```csharp
 using MyApp.Web.Components;
 using MyApp.Shared.Interfaces;
 using MyApp.Web.Services;  
 ```
-6. And right before the call to `builder.Build();` add the following code:
-
+8. And right before the call to `builder.Build();` add the following code:
 ```csharp
 ...
 // Add device specific services used by Razor Class Library (MyApp.Shared)
@@ -203,3 +202,5 @@ builder.Services.AddScoped<IFormFactor, FormFactor>();
 
 var app = builder.Build();
 ```
+
+**That's it! Have fun.**
