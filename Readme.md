@@ -40,15 +40,20 @@ To manually set this up yourself in Visual Studio, follow these steps:
 @using MyApp.Shared
 @using MyApp.Shared.Components
 ```
+9. Open the `_Imports.razor` in `MyApp.Web` add a `@using` to `MyApp.Shared`
 
-9.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
+```code
+...
+@using MyApp.Shared
+```
+10.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
 
-10.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
+11.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
 ```
 <Router AppAssembly="@typeof(Routes).Assembly">
 ...
 ```
-11. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
+12. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
     `MyApp.Shared` RCL and update the `BlazorWebView` `RootComponent` `ComponentType` from `local` to `shared`:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -67,7 +72,7 @@ To manually set this up yourself in Visual Studio, follow these steps:
 </ContentPage>
 ```
 
-12. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
+13. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
     `_content/MyApp.Shared/`:
 
 ```xml
@@ -75,16 +80,13 @@ To manually set this up yourself in Visual Studio, follow these steps:
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />
 ```
 
-13. Open `App.razor` from `MyApp.Web` project and **add** the stylesheet references to
+14. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
     the `MyApp.Shared` there too:
 
 ```xml
 <link rel="stylesheet" href="_content/MyApp.Shared/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />   
 ```
-
-14. In the `MyApp.Web` project, open `_Imports.razor` and add to end `@using MyApp.Shared`
-
 15.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
 
 16. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
