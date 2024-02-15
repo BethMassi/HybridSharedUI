@@ -1,6 +1,9 @@
+using MyApp.Shared;
 using MyApp.Shared.Interfaces;
 using MyApp.Web.Components;
-using MyApp.Web.Services;   
+using MyApp.Web.Services;
+
+GlobalRenderSettings.GlobalRenderMode = Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer;
 
 
 var builder = WebApplication.CreateBuilder(args);
