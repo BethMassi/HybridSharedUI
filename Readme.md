@@ -1,10 +1,14 @@
 # Setting up a solution for MAUI hybrid and Blazor web with shared UI
 
-This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps.
+This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps. 
 
 ![Apps running on Windows, Android, and Web with shared UI](MyApp.png)
 
-To manually set this up yourself in Visual Studio, follow these steps:
+It also demonstrates how to use Blazor render modes on the web app but ignore them in the MAUI app. It does this by setting up a helper class in the RCL called `InteractiveRenderSettings` that has properties that are used as render mode in the components while running in the web app. The `MauiProgram.cs` sets these properties to `null` so they are ignored on the client instead of throwing an exception.
+
+## Manually setting up the solution
+
+To manually set this up yourself in Visual Studio, follow these steps
 
 1.  Create an empty Solution and name it `MyApp`
 
@@ -18,7 +22,7 @@ To manually set this up yourself in Visual Studio, follow these steps:
 
     c.  Interactive render mode = Server
 
-    d.  Interactivity location = **Global** <-- _This setting is important because hybrid apps always run interactive and will throw errors on pages or components that explicitly specify a render mode. See [#51235](https://github.com/dotnet/aspnetcore/issues/51235)_
+    d.  Interactivity location = **Global** <-- _This setting is important because hybrid apps always run interactive and will throw errors on pages or components that explicitly specify a render mode. See [#51235](https://github.com/dotnet/aspnetcore/issues/51235). If you do not use a global render mode, you will need to implement the pattern shown in the repository._
     
     e.  Uncheck Include sample pages
 
@@ -99,7 +103,7 @@ app.MapRazorComponents<App>()
 **You should now be all set! F5 and party on.**
 
 
-# Using Interfaces to support different device implementations
+## Using Interfaces to support different device implementations
 
 This sample also shows how to use interfaces on the UI to call into different implementations across the web app and the native (MAUI Hybrid) app. We will make a component that displays the device form factor. We can use the MAUI abstraction layer for all the native apps but we will need to provide our own implementation for the web app.
 
@@ -205,5 +209,7 @@ builder.Services.AddScoped<IFormFactor, FormFactor>();
 
 var app = builder.Build();
 ```
+
+You can also use compiler preprocessor directives in your RCL to implement different UI depending on the device you are running on. In that case you need to multi-target your RCL like you do in your MAUI app. For an example of that see: [BethMassi/BethTimeUntil](https://github.com/BethMassi/BethTimeUntil) repo. 
 
 **That's it! Have fun.**
