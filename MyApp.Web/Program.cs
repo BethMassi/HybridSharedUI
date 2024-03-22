@@ -3,10 +3,6 @@ using MyApp.Shared.Interfaces;
 using MyApp.Web.Components;
 using MyApp.Web.Services;
 
-// Set the interactive render mode for components in the Shared class library
-InteractiveRenderSettings.InteractiveRenderMode = Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer;
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

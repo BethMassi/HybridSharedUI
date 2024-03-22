@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MyApp.MAUI.Services;
+using MyApp.Shared;
 using MyApp.Shared.Interfaces;
 
 namespace MyApp.MAUI
@@ -8,6 +9,11 @@ namespace MyApp.MAUI
     {
         public static MauiApp CreateMauiApp()
         {
+            //Ignore the interactive render settings in the shared razor class library. 
+            InteractiveRenderSettings.InteractiveServer = null;
+            InteractiveRenderSettings.InteractiveAuto = null;
+            InteractiveRenderSettings.InteractiveWebAssembly = null;
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
