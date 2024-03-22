@@ -9,10 +9,8 @@ namespace MyApp.MAUI
     {
         public static MauiApp CreateMauiApp()
         {
-            //Ignore the interactive render settings in the shared razor class library. 
-            InteractiveRenderSettings.InteractiveServer = null;
-            InteractiveRenderSettings.InteractiveAuto = null;
-            InteractiveRenderSettings.InteractiveWebAssembly = null;
+            //Ignore the interactive render settings in the shared razor class library by calling this method. 
+            InteractiveRenderSettings.ConfigureBlazorHybridRenderModes();
 
             var builder = MauiApp.CreateBuilder();
             builder
