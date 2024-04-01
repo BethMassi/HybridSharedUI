@@ -1,5 +1,5 @@
 # Setting up a solution for MAUI hybrid and Blazor web with shared UI
-## (Rendering mode: Server - Global)
+## (Rendering mode: Server - Per page/component)
 This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps. 
 
 ![Apps running on Windows, Android, and Web with shared UI](MyApp.png)
@@ -22,7 +22,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 
     c.  Interactive render mode = **Server**
 
-    d.  Interactivity location = **Global** <-- _This setting is important because hybrid apps always run interactive and will throw errors on pages or components that explicitly specify a render mode. See [#51235](https://github.com/dotnet/aspnetcore/issues/51235). If you do not use a global render mode, you will need to implement the pattern shown in this repository._
+    d.  Interactivity location = **Per page/component** 
     
     e.  Uncheck Include sample pages
        
@@ -36,6 +36,10 @@ To manually set this up yourself in Visual Studio, follow these steps
 
 6.  Move the `Components` folder and all of its contents from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
 
+1.  Open the `Counter.razor` page and user the `@page` directive at the top add:
+```code
+@rendermode InteractiveServer
+```
 7.  Move `wwwroot/css` folder and all of its contents from from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
 
 8. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
