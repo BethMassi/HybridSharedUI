@@ -6,8 +6,7 @@ using MyApp.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents();
 
 // Add device specific services used by Razor Class Library (MyApp.Shared)
 builder.Services.AddScoped<IFormFactor, FormFactor>();
@@ -27,8 +26,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
+app.MapRazorComponents<App>()    
     .AddAdditionalAssemblies(typeof(MyApp.Shared._Imports).Assembly); 
 
 app.Run();
