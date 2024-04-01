@@ -5,9 +5,11 @@ VisualStudioVersion = 17.9.34518.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.MAUI", "MyApp.MAUI\MyApp.MAUI.csproj", "{CD8C0921-6E3D-4782-A383-B9AF1C602886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Web", "MyApp.Web\MyApp.Web.csproj", "{4B46699A-2C52-4D9B-9ECC-BFC1DAB73044}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Web", "MyApp.Web\MyApp.Web.csproj", "{4B46699A-2C52-4D9B-9ECC-BFC1DAB73044}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Shared", "MyApp.Shared\MyApp.Shared.csproj", "{2BD5CA44-7E13-4398-BF48-FBC1ED61E629}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Shared", "MyApp.Shared\MyApp.Shared.csproj", "{2BD5CA44-7E13-4398-BF48-FBC1ED61E629}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Web.Client", "MyApp.Web.Client\MyApp.Web.Client.csproj", "{1A7650D3-3DAE-460C-9B20-C3D71A7A4E8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{2BD5CA44-7E13-4398-BF48-FBC1ED61E629}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BD5CA44-7E13-4398-BF48-FBC1ED61E629}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BD5CA44-7E13-4398-BF48-FBC1ED61E629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A7650D3-3DAE-460C-9B20-C3D71A7A4E8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7650D3-3DAE-460C-9B20-C3D71A7A4E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7650D3-3DAE-460C-9B20-C3D71A7A4E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7650D3-3DAE-460C-9B20-C3D71A7A4E8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

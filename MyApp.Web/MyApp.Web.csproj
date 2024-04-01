@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Shared\MyApp.Shared.csproj" />
+    <ProjectReference Include="..\MyApp.Web.Client\MyApp.Web.Client.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
   </ItemGroup>
 
 </Project>

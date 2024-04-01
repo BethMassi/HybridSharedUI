@@ -1,4 +1,5 @@
-# Setting up a solution for MAUI hybrid and Blazor web with shared UI
+# Setting up a solution for MAUI hybrid and Blazor web with shared UI 
+## (Rendering mode: Auto-Global)
 
 This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps. 
 
@@ -20,11 +21,13 @@ To manually set this up yourself in Visual Studio, follow these steps
 
     b.  Configure for HTTPS is checked
 
-    c.  Interactive render mode = Server
+    c.  Interactive render mode = **Auto** 
 
-    d.  Interactivity location = **Global** <-- _This setting is important because hybrid apps always run interactive and will throw errors on pages or components that explicitly specify a render mode. See [#51235](https://github.com/dotnet/aspnetcore/issues/51235). If you do not use a global render mode, you will need to implement the pattern shown in this repository._
+    d.  Interactivity location = **Global** 
     
     e.  Uncheck Include sample pages
+       
+![](TemplateOptions.png)      
 
 4.  Add new project Razor Class Library (RCL) and name it `MyApp.Shared`
 
@@ -44,7 +47,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 @using MyApp.Shared
 @using MyApp.Shared.Components
 ```
-9. Open the `_Imports.razor` in `MyApp.Web` add a `@using` to `MyApp.Shared`
+9. Open the `_Imports.razor` files in both `MyApp.Web` and `MyApp.Web.Client` add a `@using` to `MyApp.Shared`
 
 ```code
 ...
@@ -93,11 +96,14 @@ To manually set this up yourself in Visual Studio, follow these steps
 ```
 15.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
 
-16. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
+16.  In the `MyApp.Web.Client` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages` folder and all of its contents.
+
+17. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
 
 ```code
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MyApp.Shared._Imports).Assembly);
 ```
 **You should now be all set! F5 and party on.**
@@ -160,6 +166,26 @@ namespace MyApp.Web.Services
     }
 }
 ``` 
+3. In the `MyApp.Web.Client` project, add a folder called `Services` and add a file called `FormFactor.cs`. Add the following code:
+
+```csharp
+using MyApp.Shared.Interfaces;
+
+namespace MyApp.Web.Client.Services
+{
+    public class FormFactor : IFormFactor
+    {
+        public string GetFormFactor()
+        {
+            return "WebAssembly";
+        }
+        public string GetPlatform()
+        {
+            return Environment.OSVersion.ToString();
+        }
+    }
+}
+``` 
 4. Now in the `MyApp.MAUI` project, add a folder called `Services` and add a file called `FormFactor.cs`. We can use the MAUI abstractions layer to write code that will work on all the native device platforms. Add the following code:
  
 ```csharp
@@ -208,6 +234,17 @@ using MyApp.Web.Services;
 builder.Services.AddScoped<IFormFactor, FormFactor>();
 
 var app = builder.Build();
+```
+9. In the `MyApp.Web.Client` project, open the `Program.cs` and right before the call to `builder.Build();` add the `using`s at the top:
+```csharp
+using MyApp.Shared.Interfaces;
+using MyApp.Web.Client.Services;
+```
+10. And right before the call to `builder.Build();` add the following code:
+```csharp
+...
+// Add device specific services used by Razor Class Library (MyApp.Shared)
+builder.Services.AddSingleton<IFormFactor, FormFactor>();
 ```
 
 You can also use compiler preprocessor directives in your RCL to implement different UI depending on the device you are running on. In that case you need to multi-target your RCL like you do in your MAUI app. For an example of that see: [BethMassi/BethTimeUntil](https://github.com/BethMassi/BethTimeUntil) repo. 
