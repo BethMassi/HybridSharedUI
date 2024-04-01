@@ -1,5 +1,5 @@
 # Setting up a solution for MAUI hybrid and Blazor web with shared UI 
-## (Rendering mode: Auto-Global)
+## (Rendering mode: WebAssembly-Global)
 
 This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps. 
 
@@ -21,7 +21,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 
     b.  Configure for HTTPS is checked
 
-    c.  Interactive render mode = **Auto** 
+    c.  Interactive render mode = **Web Assembly** 
 
     d.  Interactivity location = **Global** 
     
@@ -101,8 +101,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 17. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
 
 ```code
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
+app.MapRazorComponents<App>()    
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MyApp.Shared._Imports).Assembly);
 ```
