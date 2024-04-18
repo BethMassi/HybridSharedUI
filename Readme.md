@@ -98,18 +98,18 @@ To manually set this up yourself in Visual Studio, follow these steps
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />
 ```
 
-16. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
+17. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
     the `MyApp.Shared` there too:
 
 ```xml
 <link rel="stylesheet" href="_content/MyApp.Shared/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />   
 ```
-17.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
+18.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
 
-18.  In the `MyApp.Web.Client` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages` folder and all of its contents.
+19.  In the `MyApp.Web.Client` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages` folder and all of its contents.
 
-19. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
+20. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
 
 ```code
 app.MapRazorComponents<App>()    
