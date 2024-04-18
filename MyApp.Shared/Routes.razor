@@ -1,4 +1,5 @@
-﻿<Router AppAssembly="@typeof(Routes).Assembly">
+﻿<Router AppAssembly="@typeof(Routes).Assembly" 
+        AdditionalAssemblies="new [] { typeof(MyApp.Shared.Client._Imports).Assembly}">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />

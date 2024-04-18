@@ -1,17 +1,17 @@
-﻿using MyApp.Shared.Interfaces;
+﻿//using MyApp.Shared.Interfaces;
 
-namespace MyApp.Web.Client.Services
-{
-    public class FormFactor : IFormFactor
-    {
-        public string GetFormFactor()
-        {
-            return "WebAssembly";
-        }
+//namespace MyApp.Web.Client.Services
+//{
+//    public class FormFactor : IFormFactor
+//    {
+//        public string GetFormFactor()
+//        {
+//            return "WebAssembly";
+//        }
 
-        public string GetPlatform()
-        {
-            return Environment.OSVersion.ToString();
-        }
-    }
-}
+//        public string GetPlatform()
+//        {
+//            return Environment.OSVersion.ToString();
+//        }
+//    }
+//}

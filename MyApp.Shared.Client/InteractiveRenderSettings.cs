@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace MyApp.Shared
+namespace MyApp.Shared.Client
 {
     // Set the interactive render modes for use by components in the Shared class library which can be overridden by the MAUI client.
     public static class InteractiveRenderSettings
@@ -15,7 +15,6 @@ namespace MyApp.Shared
             InteractiveServer = null;
             InteractiveAuto = null;
             InteractiveWebAssembly = null;
-            MyApp.Shared.Client.InteractiveRenderSettings.ConfigureBlazorHybridRenderModes();
         }
     }
 }
