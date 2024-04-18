@@ -1,5 +1,5 @@
 # Setting up a solution for MAUI hybrid and Blazor web with shared UI 
-## (Rendering mode: WebAssembly-Global)
+## (Rendering mode: WebAssembly-Per page/component)
 
 This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps. 
 
@@ -23,7 +23,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 
     c.  Interactive render mode = **Web Assembly** 
 
-    d.  Interactivity location = **Global** 
+    d.  Interactivity location = **Per page/component** 
     
     e.  Uncheck Include sample pages
        
@@ -33,17 +33,23 @@ To manually set this up yourself in Visual Studio, follow these steps
 
     a.  don\'t select \"support pages and views\" (default)
 
-5.  Now add project references to `MyApp.Shared` from both `MyApp.MAUI` & `MyApp.Web` project
+5.  Add new project Razor Class Library (RCL) and name it `MyApp.Shared.Client`
 
-6.  Move the `Components` folder and all of its contents from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
+    a.  don\'t select \"support pages and views\" (default)
 
-7.  Open the `Counter.razor` page and under the `@page` directive add the following code:
+6.  Now add project references to `MyApp.Shared` from both `MyApp.MAUI` & `MyApp.Web` project. Add a project reference to `MyApp.Shared.Client` from `MyApp.Web.Client` project.
+
+7.  Move the `Components` folder and all of its contents from `MyApp.MAUI` to `MyApp.Shared` except for the `Counter.razor` page.
+
+8.  Open the `Counter.razor` page and under the `@page` directive add the following code:
 ```code
 @rendermode InteractiveWebAssembly
 ```
-8.  Move `wwwroot/css` folder and all of its contents from from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
+9. Move `Components\Pages\Counter.razor` from `MyApp.MAUI` to `MyApp.Shared.Client` project.
+ 
+10.  Move `wwwroot/css` folder and all of its contents from from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
 
-9. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
+11. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
     and rename the last two `@using`s to `MyApp.Shared`
 
 ```code
@@ -51,20 +57,21 @@ To manually set this up yourself in Visual Studio, follow these steps
 @using MyApp.Shared
 @using MyApp.Shared.Components
 ```
-10. Open the `_Imports.razor` files in both `MyApp.Web` and `MyApp.Web.Client` add a `@using` to `MyApp.Shared`
+12. Open the `_Imports.razor` file in `MyApp.Web` and add a `@using` to `MyApp.Shared`
 
 ```code
 ...
 @using MyApp.Shared
 ```
-11.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
+13.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
 
-12.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
+14.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
 ```
-<Router AppAssembly="@typeof(Routes).Assembly">
+<Router AppAssembly="@typeof(Routes).Assembly"
+        AdditionalAssemblies="new [] { typeof(MyApp.Shared.Client._Imports).Assembly}">    >
 ...
 ```
-13. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
+15. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
     `MyApp.Shared` RCL and update the `BlazorWebView` `RootComponent` `ComponentType` from `local` to `shared`:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -83,7 +90,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 </ContentPage>
 ```
 
-14. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
+16. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
     `_content/MyApp.Shared/`:
 
 ```xml
@@ -91,23 +98,24 @@ To manually set this up yourself in Visual Studio, follow these steps
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />
 ```
 
-15. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
+16. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
     the `MyApp.Shared` there too:
 
 ```xml
 <link rel="stylesheet" href="_content/MyApp.Shared/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />   
 ```
-16.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
+17.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
 
-17.  In the `MyApp.Web.Client` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages` folder and all of its contents.
+18.  In the `MyApp.Web.Client` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages` folder and all of its contents.
 
-18. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
+19. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
 
 ```code
 app.MapRazorComponents<App>()    
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(MyApp.Shared._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(MyApp.Shared._Imports).Assembly)
+    .AddAdditionalAssemblies(typeof(MyApp.Shared.Client._Imports).Assembly); 
 ```
 **You should now be all set! F5 and party on.**
 
@@ -169,27 +177,8 @@ namespace MyApp.Web.Services
     }
 }
 ``` 
-3. In the `MyApp.Web.Client` project, add a folder called `Services` and add a file called `FormFactor.cs`. Add the following code:
 
-```csharp
-using MyApp.Shared.Interfaces;
-
-namespace MyApp.Web.Client.Services
-{
-    public class FormFactor : IFormFactor
-    {
-        public string GetFormFactor()
-        {
-            return "WebAssembly";
-        }
-        public string GetPlatform()
-        {
-            return Environment.OSVersion.ToString();
-        }
-    }
-}
-``` 
-4. Now in the `MyApp.MAUI` project, add a folder called `Services` and add a file called `FormFactor.cs`. We can use the MAUI abstractions layer to write code that will work on all the native device platforms. Add the following code:
+3. Now in the `MyApp.MAUI` project, add a folder called `Services` and add a file called `FormFactor.cs`. We can use the MAUI abstractions layer to write code that will work on all the native device platforms. Add the following code:
  
 ```csharp
 using MyApp.Shared.Interfaces;
