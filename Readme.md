@@ -38,8 +38,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 
 7.  Move `wwwroot/css` folder and all of its contents from from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V)
 
-8. Move `_Imports.razor` from `MyApp.MAUI` to `MyApp.Shared` (overwrite the one that is there)
-    and rename the last two `@using`s to `MyApp.Shared`
+8. Rename the last two `@using`s in the `_Imports.razor` (which was moved from `MyApp.MAUI` to `MyApp.Shared` as a part of `Components` folder) to `MyApp.Shared`
 
 ```code
 ...
@@ -52,14 +51,13 @@ To manually set this up yourself in Visual Studio, follow these steps
 ...
 @using MyApp.Shared
 ```
-10.  Move `Routes.razor` from `MyApp.MAUI` to `MyApp.Shared` (Ctrl+X, Ctrl+V). 
 
-11.  Open the `Routes.razor` file and change `MauiProgram` to `Routes`:
+10.  Open the `Routes.razor` file (which was moved from the `MyApp.MAUI` to `MyApp.Shared` a part of `Components` folder) and change `MauiProgram` to `Routes`:
 ```
 <Router AppAssembly="@typeof(Routes).Assembly">
 ...
 ```
-12. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
+11. Open the `MainPage.xaml` in the `MyApp.MAUI` project and add a `xmlns:shared` reference to the
     `MyApp.Shared` RCL and update the `BlazorWebView` `RootComponent` `ComponentType` from `local` to `shared`:
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -78,7 +76,7 @@ To manually set this up yourself in Visual Studio, follow these steps
 </ContentPage>
 ```
 
-13. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
+12. In the `MyApp.MAUI` project open `wwwroot/index.html` and change stylesheets to point to
     `_content/MyApp.Shared/`:
 
 ```xml
@@ -86,16 +84,16 @@ To manually set this up yourself in Visual Studio, follow these steps
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />
 ```
 
-14. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
+13. Open `App.razor` from `MyApp.Web` project `Components` folder and **add** the stylesheet references to
     the `MyApp.Shared` there too:
 
 ```xml
 <link rel="stylesheet" href="_content/MyApp.Shared/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="_content/MyApp.Shared/css/app.css" />   
 ```
-15.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
+14.  In the `MyApp.Web` project, delete files `Routes.razor`, `Layouts` folder & all its contents, and `Pages\Home.razor` (leave the `Error.razor` page)
 
-16. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
+15. Open `MyApp.Web` project `Program.cs` file and `AddAddionalAssemblies` to `MapRazorComponents`:
 
 ```code
 app.MapRazorComponents<App>()
