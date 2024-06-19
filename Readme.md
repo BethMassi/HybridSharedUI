@@ -1,4 +1,7 @@
 # Setting up a solution for MAUI hybrid and Blazor web with shared UI
+
+> **Update:** We now have an official tutorial and sample in the Blazor hybrid docs: [Build a .NET MAUI Blazor Hybrid app with a Blazor Web App](https://learn.microsoft.com/aspnet/core/blazor/hybrid/tutorials/maui-blazor-web-app?view=aspnetcore-8.0). Starting in .NET 9 Preview 5, we also have a solution template that will set this up automatically for you. [Take a look at the .NET 9 Preview 5 release notes](https://github.com/dotnet/core/blob/main/release-notes/9.0/preview/preview5/aspnetcore.md#new-net-maui-blazor-hybrid-and-web-solution-template) for more info or [the 9.0 version of the tutorial](https://learn.microsoft.com/aspnet/core/blazor/hybrid/tutorials/maui-blazor-web-app?view=aspnetcore-9.0#net-maui-blazor-hybrid-and-web-app-solution-template).
+
 ## (Rendering mode: Server - Global)
 This repo demonstrates a starter solution that contains a MAUI hybrid (native, cross-platform) app, a Blazor web app and a Razor class library that contains all the shared UI that is used by both native and web apps. 
 
